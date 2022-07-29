@@ -2,7 +2,12 @@ class ReviewsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
   def index
-    reviews = Review.all
+    if params[:dog_house_id]
+      reviews = Review.find_by dog_house_id: params[:dog_house_id]
+      
+    else
+      reviews = Review.all
+    end
     render json: reviews, include: :dog_house
   end
 
